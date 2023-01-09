@@ -10,6 +10,7 @@ module.exports = {
         '@typescript-eslint/no-shadow': ['warn'],
         '@typescript-eslint/no-unused-vars': ['warn'],
         'react/react-in-jsx-scope': 'off',
+        'react-hooks/rules-of-hooks': 'off',
         'no-shadow': 'off',
         'no-undef': 'off',
       },

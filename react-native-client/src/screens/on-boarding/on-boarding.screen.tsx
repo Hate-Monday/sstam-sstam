@@ -4,15 +4,15 @@ import { CenterView } from '@/components';
 import { ScreenProps } from '../types';
 import { ScreenName } from '../enums';
 
-export const HomeScreen: FC<ScreenProps> = ({ navigation }) => {
+export const OnBoardingScreen: FC<ScreenProps> = ({ navigation }) => {
   const onPress = useCallback(() => {
-    navigation.navigate(ScreenName.OnBoarding);
+    navigation.navigate(ScreenName.Home);
   }, [navigation]);
 
   return (
     <CenterView>
-      <Text>HOME</Text>
-      <Button title="온보딩 페이지로 이동" onPress={onPress} />
+      <Text>ON-BOARDING</Text>
+      <Button title="홈으로 이동" onPress={onPress} />
     </CenterView>
   );
 };

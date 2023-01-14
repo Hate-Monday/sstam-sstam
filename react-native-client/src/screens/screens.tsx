@@ -1,22 +1,25 @@
 import { FC } from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { ScreenRootStackProps } from './types';
 import { NavigationContainer } from '@react-navigation/native';
 import { ScreenName } from './enums';
 import { HomeScreen } from './home';
-
-const stack = createNativeStackNavigator<ScreenRootStackProps>();
+import { OnBoardingScreen } from './on-boarding';
+import { NavigationStack } from './stack';
 
 export const NavigationScreens: FC = () => {
   return (
     <NavigationContainer>
-      <stack.Navigator initialRouteName={ScreenName.HomeScreen}>
-        <stack.Screen
-          name={ScreenName.HomeScreen}
+      <NavigationStack.Navigator initialRouteName={ScreenName.Home}>
+        <NavigationStack.Screen
+          name={ScreenName.OnBoarding}
+          component={OnBoardingScreen}
+          options={{ title: '온보딩' }}
+        />
+        <NavigationStack.Screen
+          name={ScreenName.Home}
           component={HomeScreen}
           options={{ title: '홈' }}
         />
-      </stack.Navigator>
+      </NavigationStack.Navigator>
     </NavigationContainer>
   );
 };

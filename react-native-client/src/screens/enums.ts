@@ -1,3 +1,4 @@
 export enum ScreenName {
-  HomeScreen = 'HomeScreen',
+  OnBoarding = 'OnBoarding',
+  Home = 'Home',
 }

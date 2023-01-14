@@ -3,15 +3,18 @@ import { Platform } from 'react-native';
 import { AndroidPermission, IosPermission } from './platforms';
 
 export class Permission {
+  private readonly ios = new IosPermission();
+  private readonly android = new AndroidPermission();
+
   useCheck() {
     useEffect(() => {
       switch (Platform.OS) {
-        case 'android':
-          new AndroidPermission().check();
+        case 'ios':
+          this.ios.check();
           break;
 
-        case 'ios':
-          new IosPermission().check();
+        case 'android':
+          this.android.check();
           break;
       }
     }, []);

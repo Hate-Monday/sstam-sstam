@@ -1,4 +1,4 @@
-import {ColorSchemeName, StatusBarStyle} from 'react-native';
+import { ColorSchemeName, StatusBarStyle } from 'react-native';
 
 export type AppStoreProps = {
   theme: ColorSchemeName;

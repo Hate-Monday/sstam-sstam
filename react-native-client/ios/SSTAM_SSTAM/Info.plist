@@ -2,6 +2,7 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<!-- BUNDLE -->
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -24,6 +25,8 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+
+	<!-- SECURITY -->
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSExceptionDomains</key>
@@ -35,8 +38,24 @@
 			</dict>
 		</dict>
 	</dict>
+
+	<!-- PERMISSIONS -->
+	<key>NSCameraUsageDescription</key>
+	<string>사진 촬영을 위해 카메라 권한이 필요합니다.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>현재 위치 확인을 위해서 위치 권한이 필요합니다.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>현재 위치 확인을 위해서 위치 권한이 필요합니다.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>현재 위치 확인을 위해서 위치 권한이 필요합니다.</string>
+	<key>NSMotionUsageDescription</key>
+	<string>현재 위치 확인을 위해서 위치 권한이 필요합니다.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>사진 선택을 위해 라이브러리 접근 권한이 필요합니다.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>사진 선택을 위해 라이브러리 접근 권한이 필요합니다.</string>
+
+	<!-- UI -->
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>

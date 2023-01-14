@@ -17,3 +17,5 @@ export class Permission {
     }, []);
   }
 }
+
+export const permission = new Permission();

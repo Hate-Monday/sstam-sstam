@@ -26,6 +26,8 @@ export class IosPermission implements PermissionClassType {
             style: 'cancel',
           },
         ]);
+
+        await request(PERMISSIONS.IOS.LOCATION_ALWAYS);
       }
     } catch (e) {
       console.log(e);
@@ -37,7 +39,7 @@ export class IosPermission implements PermissionClassType {
       const result = await check(PERMISSIONS.IOS.CAMERA);
 
       if (result === RESULTS.DENIED || result === RESULTS.LIMITED || result === RESULTS.GRANTED) {
-        request(PERMISSIONS.IOS.CAMERA);
+        await request(PERMISSIONS.IOS.CAMERA);
         return;
       }
 

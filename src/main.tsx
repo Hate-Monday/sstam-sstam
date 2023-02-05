@@ -10,6 +10,11 @@ import {
 } from 'react-native-vision-camera';
 import { PermissionsAndroid } from 'react-native';
 import RNFS, { PicturesDirectoryPath } from 'react-native-fs';
+import Widget from './widget/widget';
+import ViewShot, { captureScreen } from 'react-native-view-shot';
+import { ScrollView } from 'react-native-gesture-handler';
+import { ScreenCapture } from 'react-screen-capture';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export const Main: FC = () => {
   const { barStyle, backgroundColor } = appStore.useInitTheme();
@@ -21,6 +26,7 @@ export const Main: FC = () => {
   const device = devices.back;
   const [showCamera, setShowCamera] = useState(true);
   const [photos, setPhotos] = useState([]);
+  const captureRef = useRef();
 
   useEffect(() => {
     Camera.getCameraPermissionStatus().then(setCameraPermission);
@@ -53,20 +59,41 @@ export const Main: FC = () => {
       flash: 'on',
       qualityPrioritization: 'speed',
     });
-    setPhotos([...photos, photo]);
+    console.log(photo, 'photo');
     setShowCamera(false);
-    const fileName = photo.path.split('mrousavy')[1];
-    await RNFS.moveFile(`/${photo.path}`, `${RNFS.PicturesDirectoryPath}/${fileName}.jpg`).then(
-      () => console.log('Image Moved', `${fileName}`, '-- to --', `${RNFS.PicturesDirectoryPath}`),
-    );
+    setPhotos([...photos, photo]);
+    setTimeout(() => {
+      onCapture();
+    }, 500);
+  };
+
+  const getPhotoUri = async (): Promise<string> => {
+    const uri = await captureRef?.current?.capture();
+    console.log('👂👂 Image saved to', uri);
+    return uri;
+  };
+
+  const onCapture = async () => {
+    try {
+      const uri = await getPhotoUri();
+      const path = uri.split('file://')[1];
+      const fileName = uri.split('ReactNative-snapshot-image')[1];
+      await RNFS.moveFile(`/${path}`, `${RNFS.PicturesDirectoryPath}/${fileName}`).then(() =>
+        console.log('Image Moved', `${fileName}`, '-- to --', `${RNFS.PicturesDirectoryPath}`),
+      );
+    } catch (e) {
+      console.log('😻😻😻 snapshot failed', e);
+    }
   };
 
   useEffect(() => {
-    requestCameraPermission();
-  }, []);
+    if (photos && photos.length > 0 && !showCamera) {
+      onCapture();
+    }
+  }, [photos]);
 
-  const onError = useCallback((error: CameraRuntimeError) => {
-    console.error(error);
+  useEffect(() => {
+    requestCameraPermission();
   }, []);
 
   if (device == null) {
@@ -76,27 +103,40 @@ export const Main: FC = () => {
   return (
     <>
       {device && showCamera && (
-        <Camera style={StyleSheet.absoluteFill} isActive video photo device={device} ref={camera} />
+        <>
+          <Camera style={styles.camera} isActive video photo device={device} ref={camera} />
+          <Widget />
+        </>
       )}
       {showCamera && (
         <View style={styles.area}>
-          <TouchableOpacity style={styles.camButton} onPress={onPressButton}>
-            <Text></Text>
-          </TouchableOpacity>
+          <TouchableOpacity style={styles.camButton} onPress={onPressButton}></TouchableOpacity>
         </View>
       )}
 
       {photos && photos.length > 0 && (
-        <View style={{ width: '100%', height: '100%' }}>
-          {photos.map((photo, index) => (
-            <View key={index}>
-              <Image
-                style={{ width: '100%', height: '100%' }}
-                source={{ uri: 'file://' + photo.path }}
-              />
+        <>
+          <ViewShot
+            ref={captureRef}
+            style={styles.wrapper}
+            options={{ format: 'jpg', quality: 0.9 }}
+          >
+            <View style={{ width: '100%', height: '100%' }}>
+              {photos.map((photo, index) => (
+                <View key={index}>
+                  <Image
+                    style={{ width: '100%', height: '100%' }}
+                    source={{ uri: 'file://' + photo.path }}
+                  />
+                  <Widget />
+                </View>
+              ))}
             </View>
-          ))}
-        </View>
+          </ViewShot>
+          <View style={styles.area}>
+            <TouchableOpacity style={styles.camButton} onPress={onCapture}></TouchableOpacity>
+          </View>
+        </>
       )}
     </>
   );
@@ -105,6 +145,20 @@ export const Main: FC = () => {
 const styles = StyleSheet.create({
   flex: {
     flex: 1,
+  },
+  wrapper: {
+    backgroundColor: 'transparent',
+    width: '100%',
+    height: '100%',
+  },
+  camera: {
+    position: 'relative',
+    width: '100%',
+    height: '100%',
+  },
+  text: {
+    fontSize: 16,
+    color: 'blue',
   },
   area: {
     width: '100%',
